@@ -1,0 +1,60 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.cache
+*.vs/
+
+## NuGet
+packages/
+*.nupkg
+**/[Pp]ackages/*
+
+## VS / VS Code / Rider
+*.swp
+*.*~
+.vs/
+.vscode/
+.idea/
+*.DotSettings.user
+
+## OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+## Build
+[Bb]uild/
+[Pp]ublished/
+publish/
+*.pidb
+*.pdb
+
+## MCP test artifacts
+swagger_*.json
+Erp.BO.*.json
+
+## Application Insights
+[Aa]pplicationInsights.config
+
+## Test results
+TestResults/
+*.trx
+*.coverage
+
+## Epicor credentials — keep off GitHub!
+appsettings.json
+appsettings.*.json
+
+## Logs
+*.log
+logs/
+
+## Temp
+tmp/
+temp/
+.tmp/
