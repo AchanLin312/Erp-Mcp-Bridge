@@ -47,6 +47,38 @@
 
 **HTTP/SSE 模式**（团队共享）：配置 `"Transport": "http"`，服务监听 `http://localhost:5000`，Trae 中 URL 填 `http://localhost:5000/sse`
 
+## MCP 配置
+
+在 Trae 或其他 MCP 客户端中添加以下配置：
+
+### stdio 模式
+
+```json
+{
+  "mcpServers": {
+    "mcp_epicor-mcp-bridge": {
+      "command": "dotnet",
+      "args": ["run", "--project", "D:\\MCP\\Erp-Mcp-Bridge"],
+      "env": {}
+    }
+  }
+}
+```
+
+### HTTP/SSE 模式
+
+先启动服务：`dotnet run`（配置 `"Transport": "http"`），然后：
+
+```json
+{
+  "mcpServers": {
+    "mcp_mcp_epicor-mcp-bridge": {
+      "url": "http://localhost:5000/sse"
+    }
+  }
+}
+```
+
 ## 典型工作流
 
 ### 查询 BO 数据
