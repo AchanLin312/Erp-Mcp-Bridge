@@ -54,6 +54,11 @@ appsettings.*.json
 *.log
 logs/
 
+## Project — not for version control
+.trae/
+Documents/
+Test/
+
 ## Temp
 tmp/
 temp/
