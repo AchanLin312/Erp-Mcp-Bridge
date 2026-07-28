@@ -33,6 +33,8 @@
 | `DemoteEfxLibrary` | 将库从发布环境降级到开发环境 |
 | `CreateEfxFunction` | 在库中创建新 Function |
 | `PushEfxFunction` | 更新已有 Function 的代码体 |
+| `UpdateEfxFunctionSignature` | 修改已有 Function 的输入/输出参数签名 |
+| `ListEfxReferenceCandidates` | 列出可添加的引用候选（Assembly/Table/Service/Library） |
 | `AddEfxReference` | 添加引用（Assembly/Service/Table/Library） |
 | `DeleteEfxFunction` | 删除 Function |
 | `PublishEfxLibrary` | 发布库，使修改生效 |
@@ -41,11 +43,29 @@
 
 1. 安装 .NET 10.0 SDK
 2. `cp appsettings.example.json appsettings.json` 并填入 Epicor 连接信息
-3. 选择传输模式启动：
+3. 发布并启动：
 
-**stdio 模式**（单机）：配置 `"Transport": "stdio"`，`dotnet run`
+```bash
+dotnet publish -c Release -o ./publish
+```
 
-**HTTP/SSE 模式**（团队共享）：配置 `"Transport": "http"`，服务监听 `http://localhost:5000`，Trae 中 URL 填 `http://localhost:5000/sse`
+4. 选择传输模式：
+
+**stdio 模式**（单机）：
+
+```bash
+./publish/ErpMcpBridge.exe --transport stdio
+```
+
+**HTTP/SSE 模式**（团队共享）：
+
+```bash
+./publish/ErpMcpBridge.exe --transport http --port 5000
+```
+
+服务启动后监听 `http://localhost:5000`，Trae 中 URL 填 `http://localhost:5000/sse`。
+
+> `appsettings.json` 中的 `MCPServer.Transport` 会被 `--transport` 参数覆盖，`HttpPort` 会被 `--port` 覆盖。不传参数时使用配置文件的值。
 
 ## MCP 配置
 
@@ -57,8 +77,8 @@
 {
   "mcpServers": {
     "mcp_epicor-mcp-bridge": {
-      "command": "dotnet",
-      "args": ["run", "--project", "D:\\MCP\\Erp-Mcp-Bridge"],
+      "command": "D:\\MCP\\Erp-Mcp-Bridge\\publish\\ErpMcpBridge.exe",
+      "args": ["--transport", "stdio"],
       "env": {}
     }
   }
@@ -67,7 +87,7 @@
 
 ### HTTP/SSE 模式
 
-先启动服务：`dotnet run`（配置 `"Transport": "http"`），然后：
+先启动服务：`./publish/ErpMcpBridge.exe --transport http`，然后：
 
 ```json
 {

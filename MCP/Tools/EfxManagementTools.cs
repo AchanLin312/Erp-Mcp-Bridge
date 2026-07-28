@@ -15,11 +15,20 @@ public class EfxManagementTools
     }
 
     [McpServerTool(Name = "ListEfxLibraries")]
-    [Description("获取当前公司中有哪些Library。")]
+    [Description("获取当前公司中有哪些 Library。")]
     public async Task<string> ListEfxLibraries(
         [Description("公司代码，如 GPEHZ、GPEHK")] string company)
     {
         return await _efxMgr.ListLibrariesAsync(company);
+    }
+
+    [McpServerTool(Name = "ListEfxReferenceCandidates")]
+    [Description("列出可用于 AddEfxReference 的候选引用。type 取值为 Assembly（列出可用 DLL）、Table（列出可用数据库表）、Service（列出可用 BO Service）、Library（列出可用 EFX 库）。")]
+    public async Task<string> ListEfxReferenceCandidates(
+        [Description("公司代码，如 GPEHZ、GPEHK")] string company,
+        [Description("引用类型：Assembly、Table、Service、Library。Assembly 返回 DLL 文件名，Table 返回 Erp.XXX 格式表名，Service 返回 Erp.BO.XXXSvc 格式，Library 返回库 ID 列表")] string type)
+    {
+        return await _efxMgr.ListReferenceCandidatesAsync(company, type);
     }
 
     [McpServerTool(Name = "GetLibraryDetail")]
@@ -69,6 +78,17 @@ public class EfxManagementTools
         [Description("C# 源代码，无需写 using 语句，会自动分离")] string csharpCode)
     {
         return await _efxMgr.PushFunctionAsync(company, libraryId, functionId, csharpCode);
+    }
+
+    [McpServerTool(Name = "UpdateEfxFunctionSignature")]
+    [Description("修改指定 Epicor EFX 库(Library)中已存在 Function 的参数签名（输入/输出参数）。注意：Library 必须先 Demote。signaturesJson 格式与 CreateEfxFunction 相同，会完全替换旧签名。")]
+    public async Task<string> UpdateEfxFunctionSignature(
+        [Description("公司代码，如 GPEHZ、GPEHK")] string company,
+        [Description("Library ID")] string libraryId,
+        [Description("Function ID")] string functionId,
+        [Description("参数签名 JSON 数组，格式如：[{\"Response\":false,\"ParameterID\":1,\"ArgumentName\":\"inputName\",\"Order\":1,\"DataType\":\"System.String\",\"DataTypeInfo\":null},{\"Response\":true,\"ParameterID\":2,\"ArgumentName\":\"outputResult\",\"Order\":2,\"DataType\":\"System.String\",\"DataTypeInfo\":null}]。Response=false 为输入参数，Response=true 为输出参数")] string signaturesJson)
+    {
+        return await _efxMgr.UpdateFunctionSignatureAsync(company, libraryId, functionId, signaturesJson);
     }
 
     [McpServerTool(Name = "CreateEfxFunction")]

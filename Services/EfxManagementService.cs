@@ -11,18 +11,73 @@ namespace ErpMcpBridge.Services;
 public class EfxManagementService
 {
     private readonly EpicorClientWrapper _epicor;
+    private readonly EpicorConfig _config;
+    private readonly BoMetadataService _boMeta;
 
     private const string EfxDesignerSvc = "Ice.Lib.EfxLibraryDesignerSvc";
 
-    public EfxManagementService(EpicorClientWrapper epicor)
+    public EfxManagementService(EpicorClientWrapper epicor, EpicorConfig config, BoMetadataService boMeta)
     {
         _epicor = epicor;
+        _config = config;
+        _boMeta = boMeta;
     }
 
     public async Task<string> ListLibrariesAsync(string company)
     {
         var response = await _epicor.BoPostAsync(company, EfxDesignerSvc, "GetLibraryList", new { options = new { } });
         return response.ResponseBody;
+    }
+
+    /// <summary>
+    /// 列出可用于 AddEfxReference 的候选引用。
+    /// type: Assembly → DLL 文件列表, Table → 从 Service 名推导数据表名, Service → BO Service 列表, Library → EFX Library 列表
+    /// </summary>
+    public async Task<string> ListReferenceCandidatesAsync(string company, string type)
+    {
+        switch (type)
+        {
+            case "Assembly":
+                return ListAssemblyCandidates();
+            case "Table":
+                return ListTableCandidates();
+            case "Service":
+                return ListServiceCandidates();
+            case "Library":
+                return await ListLibrariesAsync(company);
+            default:
+                return $"Error: Invalid reference type '{type}'. Must be one of: Assembly, Table, Service, Library";
+        }
+    }
+
+    private string ListAssemblyCandidates()
+    {
+        if (string.IsNullOrWhiteSpace(_config.AssembliesPath) || !Directory.Exists(_config.AssembliesPath))
+            return "Error: AssembliesPath is not configured or does not exist.";
+
+        var dlls = Directory.GetFiles(_config.AssembliesPath, "*.dll")
+            .Select(Path.GetFileName)
+            .OrderBy(n => n)
+            .ToList();
+        return Newtonsoft.Json.JsonConvert.SerializeObject(dlls);
+    }
+
+    private string ListTableCandidates()
+    {
+        // 从 BO Service 名推导数据库表名: Erp.BO.PartSvc → Erp.Part
+        var services = _boMeta.ListServices();
+        var tables = services
+            .Select(s => s.Replace(".BO.", ".").Replace("Svc", ""))
+            .Distinct()
+            .OrderBy(t => t)
+            .ToList();
+        return Newtonsoft.Json.JsonConvert.SerializeObject(tables);
+    }
+
+    private string ListServiceCandidates()
+    {
+        var services = _boMeta.ListServices().OrderBy(s => s).ToList();
+        return Newtonsoft.Json.JsonConvert.SerializeObject(services);
     }
 
     public async Task<string> GetLibraryDetailAsync(string company, string libraryId)
@@ -164,6 +219,54 @@ public class EfxManagementService
         }
 
         return await ApplyAndSaveAsync(company, $"Deleted function '{functionId}'", returnObj);
+    }
+
+    /// <summary>
+    /// 修改 Function 的参数签名（输入/输出参数）。
+    /// 先删除旧签名，再添加新签名，TrackChanges 模式。
+    /// </summary>
+    public async Task<string> UpdateFunctionSignatureAsync(string company, string libraryId,
+        string functionId, string signaturesJson)
+    {
+        var (returnObj, getErr) = await GetLibraryDatasetAsync(company, libraryId);
+        if (getErr != null) return getErr;
+
+        // 检查 Function 是否存在
+        var efxFunction = (JArray)returnObj["EfxFunction"]!;
+        bool found = false;
+        foreach (var func in efxFunction.OfType<JObject>())
+        {
+            if ((string)func["FunctionID"]! == functionId)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+            return $"Error: Function '{functionId}' not found in Library '{libraryId}'";
+
+        // 解析新签名
+        var newSignatures = JArray.Parse(signaturesJson);
+
+        // 标记旧签名为删除
+        var efxSignatures = (JArray)returnObj["EfxFunctionSignature"]!;
+        foreach (var sig in efxSignatures.OfType<JObject>())
+        {
+            if ((string)sig["FunctionID"]! == functionId)
+                sig["RowMod"] = "D";
+        }
+
+        // 添加新签名
+        foreach (var sig in newSignatures.OfType<JObject>())
+        {
+            sig["LibraryID"] = libraryId;
+            sig["FunctionID"] = functionId;
+            sig["RowMod"] = "A";
+            efxSignatures.Add(sig);
+        }
+
+        return await ApplyAndSaveAsync(company, $"Updated signature of function '{functionId}'", returnObj);
     }
 
     public async Task<string> PublishLibraryAsync(string company, string libraryId)

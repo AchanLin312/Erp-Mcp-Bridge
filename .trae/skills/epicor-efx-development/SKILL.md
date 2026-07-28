@@ -14,7 +14,7 @@ description: "Epicor Kinetic EFX Function 开发与测试全周期工作流。�
 ```
 DemoteEfxLibrary（先降级已发布库）
     ↓
-CreateEfxFunction / PushEfxFunction / DeleteEfxFunction / AddEfxReference（修改操作）
+CreateEfxFunction / PushEfxFunction / UpdateEfxFunctionSignature / DeleteEfxFunction / AddEfxReference（修改操作）
     ↓
 PublishEfxLibrary（发布使修改生效）
     ↓
@@ -38,11 +38,13 @@ GetEfxFunctionSignature（了解参数） → CallEfxFunction（调用测试）
 | 阶段 | 工具 | 用途 |
 |------|------|------|
 | 浏览 | `ListEfxLibraries` / `GetLibraryDetail` / `ListEfxFunctions` | 查看 Library 和 Function 列表 |
+| 发现 | `ListEfxReferenceCandidates` | 列出可添加的引用候选（Assembly/Table/Service/Library） |
 | 查看 | `GetEfxFunctionDetail` | 查看 Function 完整源码 |
 | 查看 | `GetEfxFunctionSignature` | 查看输入/输出参数签名（调用前必查） |
 | 降级 | `DemoteEfxLibrary` | 发布库 → 开发环境（修改前的必做步骤） |
 | 创建 | `CreateEfxFunction` | 创建新 Function |
 | 更新 | `PushEfxFunction` | 更新 Function 代码体（不影响签名） |
+| 更新 | `UpdateEfxFunctionSignature` | 修改 Function 输入/输出参数签名 |
 | 添加 | `AddEfxReference` | 添加 Assembly/Service/Table/Library 引用 |
 | 删除 | `DeleteEfxFunction` | 删除 Function |
 | 发布 | `PublishEfxLibrary` | 发布库，使所有修改在 Epicor 中生效 |
@@ -146,16 +148,38 @@ CallEfxFunction("GPEHZ", "TestLibForAchen", "SpotBuyVQNote", {"VQID": "TEST-VQ-0
 ## 场景五：添加引用
 
 ```
-1. DemoteEfxLibrary(company, libraryId)
-2. AddEfxReference(company, libraryId, type, referenceId)
+1. ListEfxReferenceCandidates(company, type)                       ← 先查看有哪些可用引用
+   type="Assembly" → DLL 文件名, "Table" → Erp.XXX 表名, "Service" → BO Service, "Library" → EFX 库
+2. DemoteEfxLibrary(company, libraryId)
+3. AddEfxReference(company, libraryId, type, referenceId)
    type 仅可取: Assembly / Service / Table / Library
    referenceId 示例:
      Assembly → "Erp.Contracts.BO.Part.dll"
-     Service  → "ERP:BO:Part"
-     Table    → "ERP.Part"
+     Service  → "Erp.BO.PartSvc"
+     Table    → "Erp.Part"
      Library  → "WorkflowGP"
-3. PublishEfxLibrary(company, libraryId)
+4. PublishEfxLibrary(company, libraryId)
 ```
+
+---
+
+## 场景六：修改已有 Function 签名
+
+当需要调整 Function 的输入参数或输出参数时（如新增参数、删除参数、改名、改类型）：
+
+```
+1. DemoteEfxLibrary(company, libraryId)
+2. GetEfxFunctionSignature(company, libraryId, functionId)          ← 查看当前签名作为基线
+3. UpdateEfxFunctionSignature(company, libraryId, functionId,
+     newSignaturesJson)                                             ← 完全替换旧签名
+4. PublishEfxLibrary(company, libraryId)
+5. CallEfxFunction(company, libraryId, functionId, payload)         ← 验证新签名生效
+```
+
+**注意：**
+- `signaturesJson` 会**完全替换**旧签名，不是追加合并
+- 签名修改后必须同步修改 `PushEfxFunction` 的代码体，否则编译报错
+- 如果只为已有参数改名，代码体中 `this.旧参数名` 引用会自动失效
 
 ---
 

@@ -17,6 +17,15 @@ class Program
         var config = LoadConfiguration();
         var mcpConfig = LoadMcpConfig();
 
+        // 命令行参数覆盖配置文件
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "--transport" && i + 1 < args.Length)
+                mcpConfig.Transport = args[++i];
+            else if (args[i] == "--port" && i + 1 < args.Length && int.TryParse(args[++i], out var port))
+                mcpConfig.HttpPort = port;
+        }
+
         if (mcpConfig.Transport == "http")
         {
             await RunHttpServer(config, mcpConfig);
@@ -29,6 +38,7 @@ class Program
 
     private static async Task RunHttpServer(EpicorConfig config, MCPServerConfig mcpConfig)
     {
+        Environment.SetEnvironmentVariable("ASPNETCORE_URLS", $"http://0.0.0.0:{mcpConfig.HttpPort}");
         var builder = WebApplication.CreateBuilder();
         ConfigureSharedServices(builder.Services, config);
         builder.Services.AddMcpServer()
