@@ -5,7 +5,7 @@ namespace ErpMcpBridge.Services;
 
 /// <summary>
 /// EFX Function 管理引擎
-/// 基于 EpicorRestAPI 的 BoPost 调用 EfxLibraryDesignerSvc 的 BO 方法
+/// 基于  的 BoPost 调用 EfxLibraryDesignerSvc 的 BO 方法
 /// TrackChanges 模式：GetLibrary → 修改 Dataset → ApplyChanges → PromoteToProduction
 /// </summary>
 public class EfxManagementService
