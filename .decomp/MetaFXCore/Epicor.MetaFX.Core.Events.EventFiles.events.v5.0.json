@@ -1,0 +1,4364 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": ["$schema", "contentVersion", "imports", "events"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "$id": "#/properties/$schema",
+      "type": "string",
+      "title": "The $schema Schema",
+      "default": "",
+      "examples": ["../MetaFx/Schemas/5.0/Events.json"],
+      "pattern": "^(.*)$"
+    },
+    "description": {
+      "$id": "#/properties/description",
+      "type": "string",
+      "title": "The Description Schema"
+    },
+    "contentVersion": {
+      "$id": "#/properties/contentVersion",
+      "type": "string",
+      "title": "The Contentversion Schema",
+      "default": "",
+      "examples": ["5.0"],
+      "pattern": "^(.*)$"
+    },
+    "imports": {
+      "$id": "#/properties/imports",
+      "type": "array",
+      "items": {
+        "$id": "#/properties/imports/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "$id": "#/properties/imports/items/properties/events",
+            "type": "object",
+            "title": "The Tools Schema",
+            "required": ["$ref"],
+            "additionalProperties": false,
+            "properties": {
+              "$ref": {
+                "$id": "#/properties/imports/items/properties/events/properties/$ref",
+                "type": "string",
+                "title": "The $ref Schema",
+                "default": "",
+                "examples": ["../Shared/ViewTypes/Default/tools.json#/tools"],
+                "pattern": "^(.*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "events": {
+      "$id": "#/properties/events",
+      "type": "array",
+      "title": "The Events Schema",
+      "items": {
+        "$id": "#/properties/events/items",
+        "type": "object",
+        "title": "The Events Items Schema",
+        "required": ["id", "actions"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$id": "#/properties/events/items/properties/id",
+            "type": "string",
+            "title": "The Id Schema"
+          },
+          "description": {
+            "$id": "#/properties/events/items/properties/description",
+            "type": "string",
+            "title": "The Description Schema"
+          },
+          "trigger": {
+            "$id": "#/properties/events/items/properties/trigger",
+            "type": "object",
+            "title": "The Trigger Schema",
+            "required": ["type", "hook"],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "$id": "#/properties/events/items/properties/trigger/properties/type",
+                "type": "string",
+                "title": "The type Schema",
+                "enum": ["Control", "Window", "EpBinding", "DataView", "DataTable", "Grid", "Page", "Tree", "Event"]
+              },
+              "target": {
+                "$id": "#/properties/events/items/properties/trigger/properties/target",
+                "type": "string",
+                "title": "The target Schema"
+              },
+              "hook": {
+                "$id": "#/properties/events/items/properties/trigger/properties/hook",
+                "type": "string",
+                "title": "The hook Schema",
+                "enum": [
+                  "onClick",
+                  "onLoad",
+                  "columnChanging",
+                  "columnChanged",
+                  "rowChanged",
+                  "rowChanging",
+                  "viewChanged",
+                  "viewChanging",
+                  "onEpPanelCardCollapsed",
+                  "onEpPanelCardExpanded",
+                  "onSearch",
+                  "epOnClickAdd",
+                  "onDataDropDownClick",
+                  "onInit",
+                  "onBlur",
+                  "onClosing",
+                  "onClosed",
+                  "onTreeNodeExpand",
+                  "onTreeNodeSelectionChange",
+                  "onTreeDropItem",
+                  "onTreeDragEnter",
+                  "onTreeBeforeExpandAll",
+                  "onBroadcastData",
+                  "onItemClick",
+                  "onLinkClick",
+                  "before",
+                  "after"
+                ]
+              },
+              "columns": {
+                "$id": "#/properties/events/items/properties/trigger/properties/columns",
+                "type": "array",
+                "control_type": "Editor",
+                "title": "The columns Schema",
+                "items": {
+                  "$id": "#/properties/events/items/properties/trigger/properties/columns/items",
+                  "type": "string",
+                  "title": "The Columns Items Schema"
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "DataView"
+                    }
+                  }
+                },
+                "then": {
+                  "required": ["target"]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "EpBinding"
+                    }
+                  }
+                },
+                "then": {
+                  "required": ["target"]
+                }
+              }
+            ]
+          },
+          "actions": {
+            "$id": "#/properties/events/items/properties/actions",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/eventAction"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "successResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "errorResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "okResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "cancelResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "yesResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "noResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "retryResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "noneResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "abortResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "ignoreResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "emptyResult": {
+      "type": "array",
+      "title": "The actionResult Schema",
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "eventAction": {
+      "type": "object",
+      "title": "The action Schema",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$id": "#/properties/events/items/properties/action/properties/type",
+          "type": "string",
+          "title": "The type Schema",
+          "sort": 1,
+          "disabled": true,
+          "enum": [
+            "search-show",
+            "rest",
+            "row-update",
+            "addRows",
+            "dialog-show",
+            "url-open",
+            "condition",
+            "event-next",
+            "data-commit",
+            "combo-refill",
+            "dataview-clear",
+            "function",
+            "dataview-replace",
+            "value-set",
+            "setFocus",
+            "app-open",
+            "app-close",
+            "process-import-service",
+            "search-value-set",
+            "property-set",
+            "title-set",
+            "file-transfer-erp",
+            "row-delete",
+            "event-column-disable",
+            "event-column-enable",
+            "event-row-disable",
+            "event-row-enable",
+            "event-view-disable",
+            "event-view-enable",
+            "event-cancel",
+            "page-navigate-to",
+            "dialog-show-system",
+            "row-copy",
+            "image-set",
+            "dataview-filter-set",
+            "row-current-set",
+            "dataview-condition",
+            "dashboard-timer-set",
+            "dashboard-timer-clear",
+            "event-complete",
+            "switch",
+            "data-clear",
+            "rest-erp",
+            "slider-open",
+            "slider-close",
+            "dataview-copy",
+            "erp-message-handler",
+            "apps-communicator-broadcast",
+            "apps-communicator-publish",
+            "return",
+            "data-rollback",
+            "global-variable-set",
+            "return-error",
+            "exit",
+            "split",
+            "select-tree-node",
+            "set-tree-node-state",
+            "refresh-tree",
+            "credit-card-entry",
+            "dataview-set-current",
+            "row-add",
+            "console-write",
+            "dialog-result-set",
+            "grid-schema-invalidate",
+            "session-set",
+            "download-attachment-erp",
+            "calculation",
+            "serial-read",
+            "grid-sort-set",
+            "grid-sort-get",
+            "row-find",
+            "dynamic-panel-open",
+            "kbmax-configurator-open",
+            "execute-csharp",
+			      "erp-function",
+            "datatree-bindings-set"
+          ]
+        },
+        "param": {
+          "$id": "#/properties/events/items/properties/action/properties/param",
+          "control_type": "Nested",
+          "sort": 6,
+          "type": ["object", "array"],
+          "items": {
+            "$id": "#/properties/events/items/properties/action/properties/param/items",
+            "type": "object"
+          },
+          "title": "The Param Schema"
+        },
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/value",
+          "sort": 2,
+          "type": ["string", "boolean", "number", "null"],
+          "title": "The Value Schema"
+        },
+        "option": {
+          "$id": "#/properties/events/items/properties/action/properties/option",
+          "type": "object",
+          "control_type": "Editor",
+          "title": "The Option Schema",
+          "additionalProperties": false,
+          "sort": 7,
+          "properties": {
+            "name": {
+              "$id": "#/properties/events/items/properties/action/properties/option/properties/name",
+              "type": "string"
+            },
+            "args": {
+              "$id": "#/properties/events/items/properties/action/properties/option/properties/args",
+              "type": "array",
+              "items": {
+                "$id": "#/properties/events/items/properties/action/properties/option/properties/args/items",
+                "type": "string",
+                "title": "The Events Items Schema"
+              }
+            },
+            "output": {
+              "$id": "#/properties/events/items/properties/action/properties/option/properties/output",
+              "type": "string"
+            },
+            "dataType": {
+              "$id": "#/properties/events/items/properties/action/properties/option/properties/dataType",
+              "type": "string",
+              "enum": ["string", "bool", "number"]
+            }
+          }
+        },
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/epBinding",
+          "control_type": "EpBinding",
+          "type": "string",
+          "title": "The EpBinding Schema",
+          "sort": 3
+        },
+        "dataview": {
+          "$id": "#/properties/events/items/properties/action/properties/dataview",
+          "control_type": "Dataview",
+          "type": "string",
+          "title": "The Dataview Schema",
+          "sort": 4
+        },
+        "dataTable": {
+          "$id": "#/properties/events/items/properties/action/properties/dataTable",
+          "type": "string",
+          "title": "The Datatable Schema",
+          "sort": 8
+        },
+        "onSuccess": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/successResult",
+          "sort": 9
+        },
+        "onError": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/errorResult",
+          "sort": 10
+        },
+        "onEmpty": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/emptyResult",
+          "sort": 10
+        },
+        "condition": {
+          "$id": "#/properties/events/items/properties/action/properties/condition",
+          "type": "string",
+          "title": "The Condition Schema",
+          "sort": 5
+        },
+        "variable": {
+          "$id": "#/properties/events/items/properties/action/properties/variable",
+          "type": "string",
+          "title": "The variable Schema",
+          "sort": 11
+        },
+        "onOk": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/okResult",
+          "sort": 12
+        },
+        "onCancel": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/cancelResult",
+          "sort": 13
+        },
+        "onYes": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/yesResult",
+          "sort": 14
+        },
+        "onNo": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/noResult",
+          "sort": 15
+        },
+        "onRetry": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/retryResult",
+          "sort": 16
+        },
+        "onNone": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/noneResult",
+          "sort": 17
+        },
+        "onAbort": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/abortResult",
+          "sort": 18
+        },
+        "onIgnore": {
+          "control_type": "Checkbox",
+          "$ref": "#/definitions/ignoreResult",
+          "sort": 19
+        },
+        "expression": {
+          "$id": "#/execute-csharp/properties/events/items/properties/action/properties/expression",
+          "sort": 20,
+          "type": "string",
+          "title": "The Expression Schema"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "rest-erp"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/rest-erp"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "event-next"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "type": "object",
+                "control_type": "Editor"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "return"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "type": "object",
+                "control_type": "Editor"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "return-error"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "type": "object",
+                "control_type": "Editor"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "row-update"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/addRow"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "row-delete"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/row-delete"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "url-open"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/url-open"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "condition"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/condition"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "dialog-show"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/ModelDialog"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "dialog-show-system"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/SystemDialog"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "search-show"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/search-show"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "data-commit"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/data-commit"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "data-clear"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/data-clear"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "console-write"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/console-write"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "calculation"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/calculation"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "rest"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/rest"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "property-set"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/property-set"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "dataview-filter-set"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/dataview-filter-set"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "image-set"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/image-set"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "row-current-set"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/row-current-set"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "dataview-condition"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/dataview-condition"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "dashboard-timer-set"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/dashboard-timer-set"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "event-complete"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/event-complete"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "switch"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/switch"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "erp-message-handler"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/erp-message-handler"
+              },
+              "onOk": {
+                "$ref": "#/definitions/successResult"
+              },
+              "onCancel": {
+                "$ref": "#/definitions/successResult"
+              },
+              "onYes": {
+                "$ref": "#/definitions/successResult"
+              },
+              "onNo": {
+                "$ref": "#/definitions/successResult"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "apps-communicator-broadcast"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/apps-communicator-broadcast"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "apps-communicator-publish"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/apps-communicator-publish"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "combo-refill"
+              }
+            }
+          },
+          "then": {
+            "hide": ["param", "option", "epBinding", "dataview", "condition", "dataTable", "variable"],
+            "categories": ["Dataview Actions"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "app-open"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/app-open"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "app-close"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/closeView"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "process-import-service"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/process-import-service"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "search-value-set"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/search-value-set"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "file-transfer-erp"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/file-transfer-erp"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "event-column-disable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/columnChangeParam"
+              }
+            },
+            "name": "event-column-disable"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "event-column-enable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/columnChangeParam"
+              }
+            },
+            "name": "event-column-enable"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "page-navigate-to"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/page-navigate-to"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "row-copy"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/row-copy"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "slider-open"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/slider-open"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "dataview-copy"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/dataview-copy"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "data-rollback"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/data-rollback"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "split"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/split"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "select-tree-node"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/select-tree-node"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "set-tree-node-state"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/set-tree-node-state"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "credit-card-entry"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/credit-card-entry"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "refresh-tree"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/refresh-tree"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "grid-schema-invalidate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/grid-schema-invalidate"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "session-set"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/session-set"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "download-attachment-erp"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/download-attachment-erp"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "grid-sort-set"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/grid-sort-set"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "grid-sort-get"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/grid-sort-get"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "serial-read"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/serial-read"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "row-find"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/row-find"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "dynamic-panel-open"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/dynamic-panel-open"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "kbmax-configurator-open"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/kbmax-configurator-open"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "execute-csharp"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/execute-csharp"
+              }
+            }
+          }
+        },
+		    {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "erp-function"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/erp-function"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "datatree-bindings-set"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "param": {
+                "$ref": "#/definitions/datatree-bindings-set"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "rest-erp": {
+      "type": "object",
+      "title": "The Erp Rest Schema",
+      "required": ["svc", "svcPath", "requestMethod"],
+      "properties": {
+        "svc": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/svc",
+          "type": "string",
+          "title": "The svc Schema"
+        },
+        "svcPath": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/svcPath",
+          "type": "string",
+          "title": "The svcPath Schema"
+        },
+        "requestMethod": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/requestMethod",
+          "type": "string",
+          "title": "The requestMethod Schema",
+          "default": "POST"
+        },
+        "erpRequestMethod": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRequestMethod",
+          "type": "string",
+          "title": "The erpRequestMethod Schema",
+          "enum": [
+            "GetAndFillEpDataview",
+            "PatchFromEpDataView",
+            "PostFromEpDataview",
+            "PostWithCustomMethod",
+            "UpdateAndPostDataTable",
+            "ErpPostWithDataViewProcessing",
+            "Get",
+            "Post",
+            "Put",
+            "Delete",
+            "Options",
+            "Head",
+            "Patch"
+          ]
+        },
+        "methodParameters": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/methodParameters",
+          "type": "array",
+          "title": "The methodParameters Schema",
+          "items": {
+            "$ref": "#/definitions/params"
+          }
+        },
+        "erpRestPostArgs": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs",
+          "type": "object",
+          "title": "The rest-erpPostArgs Schema",
+          "properties": {
+            "requestParamArgs": {
+              "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/requestParamArgs",
+              "type": "array",
+              "title": "The requestParamArgs Schema",
+              "items": {
+                "$ref": "#/definitions/erpDataViewRequestParamArg"
+              }
+            },
+            "responseParamArgs": {
+              "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs",
+              "type": "array",
+              "title": "The responseParamArgs Schema",
+              "items": {
+                "$ref": "#/definitions/erpDataViewResponseParamArg"
+              }
+            },
+            "processResponse": {
+              "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/processResponse",
+              "type": "boolean",
+              "title": "The processResponse Schema"
+            },
+            "responsePath": {
+              "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responsePath",
+              "type": "string",
+              "title": "The responsePath Schema"
+            },
+            "fillExtendedProps": {
+              "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/fillExtendedProps",
+              "type": "object",
+              "title": "The fillExtendedProps Schema",
+              "properties": {
+                "useDefaultValues": {
+                  "type": "boolean"
+                },
+                "paramName": {
+                  "type": "string"
+                },
+                "responsePath": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "erpBaqArgs": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpBaqArgs",
+          "type": "object",
+          "properties": {
+            "baqId": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ],
+              "type": ["string", "array"]
+            },
+            "options": {
+              "$ref": "#/definitions/erpBaqOptions"
+            },
+            "data": {}
+          }
+        },
+        "options": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/options",
+          "$ref": "#/definitions/epRestCallOptions"
+        },
+        "dirtyRows": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dirtyRows",
+          "type": "array",
+          "title": "The dirtyRows Schema",
+          "items": {
+            "$ref": "#/definitions/dirtyRowsParam"
+          }
+        }
+      }
+    },
+    "erpBaqOptions": {
+      "type": "object",
+      "properties": {
+        "top": {
+          "type": "number"
+        },
+        "executeOptions": {
+          "type": "object",
+          "properties": {
+            "pageNumber": {
+              "type": "number"
+            },
+            "pageSize": {
+              "type": "number"
+            },
+            "select": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "orderBy": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "groupBy": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "aggregate": {
+              "type": "object",
+              "properties": {
+                "column": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["sum", "avg", "min", "max", "count"]
+                }
+              },
+              "required": ["column", "type"],
+              "additionalProperties": false
+            },
+            "where": {
+              "$ref": "#/definitions/epDataFilterExpression"
+            },
+            "having": {
+              "$ref": "#/definitions/epDataFilterExpression"
+            }
+          }
+        },
+        "virtualizations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": ["recordCount", "groupByDetails", "pageCount"]
+              },
+              "select": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "orderBy": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "groupBy": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["mode"],
+            "additionalProperties": false
+          }
+        },
+        "updateOptions": {
+          "type": "object",
+          "properties": {
+            "operation": {
+              "type": "string",
+              "enum": [
+                "UpdateBaq",
+                "UpdateBaqFieldUpdate",
+                "UpdateBaqFieldValidate",
+                "UpdateBaqCustomAction",
+                "UpdateBaqGetNew"
+              ]
+            },
+            "fieldName": {
+              "type": "string"
+            },
+            "fieldValue": {},
+            "actionID": {
+              "type": "string"
+            },
+            "viewName": {
+              "type": "string"
+            }
+          },
+          "required": ["operation"],
+          "additionalProperties": false
+        },
+        "retrieveMetaData": {
+          "type": "boolean"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "populateDataView": {
+          "type": "boolean"
+        },
+        "headers": {
+          "type": "object"
+        },
+        "disableToken": {
+          "type": "boolean"
+        },
+        "raw": {
+          "type": "boolean"
+        },
+        "pathParams": {
+          "type": "array",
+          "items": {}
+        },
+        "params": {
+          "type": "object"
+        },
+        "query": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "odataObject": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "$filter": {
+                      "type": "string"
+                    },
+                    "$top": {
+                      "type": "number"
+                    },
+                    "$skip": {
+                      "type": "number"
+                    },
+                    "$orderby": {
+                      "type": "string"
+                    },
+                    "$select": {
+                      "type": "string"
+                    },
+                    "$expand": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "required": ["odataObject"],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "showProgress": {
+          "type": "boolean"
+        },
+        "showProgressBar": {
+          "type": "boolean"
+        },
+        "progressText": {
+          "type": "string"
+        },
+        "observe": {
+          "type": "string",
+          "enum": ["response", "body", "events"]
+        },
+        "output": {
+          "type": "object",
+          "properties": {
+            "logEntry": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "method": {
+                  "type": "string"
+                },
+                "headers": {
+                  "type": "object"
+                },
+                "startTime": {
+                  "type": "object"
+                },
+                "endTime": {
+                  "type": "object"
+                },
+                "dataCount": {
+                  "type": "number"
+                }
+              },
+              "required": ["url", "method", "startTime", "endTime"],
+              "additionalProperties": false
+            },
+            "isValue": {
+              "type": "boolean"
+            },
+            "response": {
+              "type": "object",
+              "properties": {
+                "headers": {
+                  "type": "object"
+                },
+                "status": {
+                  "type": "number"
+                },
+                "statusText": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": ["string", "null"]
+                },
+                "ok": {
+                  "type": "boolean"
+                },
+                "type": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "enum": [4]
+                    },
+                    {
+                      "type": "number",
+                      "enum": [2]
+                    }
+                  ],
+                  "type": "number",
+                  "enum": [4]
+                },
+                "body": {
+                  "anyOf": [
+                    {},
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": ["body", "headers", "ok", "status", "statusText", "type", "url"],
+              "additionalProperties": false
+            },
+            "errorResponse": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "stack": {
+                  "type": "string"
+                },
+                "headers": {
+                  "type": "object"
+                },
+                "status": {
+                  "type": "number"
+                },
+                "statusText": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": ["string", "null"]
+                },
+                "ok": {
+                  "type": "boolean"
+                },
+                "type": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "enum": [4]
+                    },
+                    {
+                      "type": "number",
+                      "enum": [2]
+                    }
+                  ]
+                },
+                "error": {
+                  "anyOf": [
+                    {},
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": ["error", "headers", "message", "name", "ok", "status", "statusText", "type", "url"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["logEntry", "isValue", "response"],
+          "additionalProperties": false
+        },
+        "responseType": {
+          "type": "string",
+          "enum": ["json", "text", "blob", "arraybuffer"]
+        },
+        "fnGetUrl": {}
+      }
+    },
+    "epRestCallOptions": {
+      "type": "object",
+      "properties": {
+        "headers": {
+          "type": "object"
+        },
+        "disableToken": {
+          "type": "boolean"
+        },
+        "raw": {
+          "type": "boolean"
+        },
+        "pathParams": {
+          "type": "array",
+          "items": {}
+        },
+        "params": {
+          "type": "object"
+        },
+        "query": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "odataObject": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "$filter": {
+                      "type": "string"
+                    },
+                    "$top": {
+                      "type": "number"
+                    },
+                    "$skip": {
+                      "type": "number"
+                    },
+                    "$orderby": {
+                      "type": "string"
+                    },
+                    "$select": {
+                      "type": "string"
+                    },
+                    "$expand": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "required": ["odataObject"],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "showProgress": {
+          "type": "boolean"
+        },
+        "showProgressBar": {
+          "type": "boolean"
+        },
+        "progressText": {
+          "type": "string"
+        },
+        "rollbackOnError": {
+          "type": "boolean"
+        },
+        "observe": {
+          "type": "string",
+          "enum": ["response", "body", "events"]
+        },
+        "output": {
+          "type": "object",
+          "properties": {
+            "logEntry": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "method": {
+                  "type": "string"
+                },
+                "headers": {
+                  "type": "object"
+                },
+                "startTime": {
+                  "type": "object"
+                },
+                "endTime": {
+                  "type": "object"
+                },
+                "dataCount": {
+                  "type": "number"
+                }
+              },
+              "required": ["url", "method", "startTime", "endTime"],
+              "additionalProperties": false
+            },
+            "isValue": {
+              "type": "boolean"
+            },
+            "response": {
+              "type": "object",
+              "properties": {
+                "headers": {
+                  "type": "object"
+                },
+                "status": {
+                  "type": "number"
+                },
+                "statusText": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": ["string", "null"]
+                },
+                "ok": {
+                  "type": "boolean"
+                },
+                "type": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "enum": [4]
+                    },
+                    {
+                      "type": "number",
+                      "enum": [2]
+                    }
+                  ],
+                  "type": "number",
+                  "enum": [4]
+                },
+                "body": {
+                  "anyOf": [
+                    {},
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": ["body", "headers", "ok", "status", "statusText", "type", "url"],
+              "additionalProperties": false
+            },
+            "errorResponse": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "stack": {
+                  "type": "string"
+                },
+                "headers": {
+                  "type": "object"
+                },
+                "status": {
+                  "type": "number"
+                },
+                "statusText": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": ["string", "null"]
+                },
+                "ok": {
+                  "type": "boolean"
+                },
+                "type": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "enum": [4]
+                    },
+                    {
+                      "type": "number",
+                      "enum": [2]
+                    }
+                  ]
+                },
+                "error": {
+                  "anyOf": [
+                    {},
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": ["error", "headers", "message", "name", "ok", "status", "statusText", "type", "url"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["logEntry", "isValue", "response"],
+          "additionalProperties": false
+        },
+        "responseType": {
+          "type": "string",
+          "enum": ["json", "text", "blob", "arraybuffer"]
+        },
+        "fnGetUrl": {}
+      },
+      "additionalProperties": false
+    },
+    "dirtyRowsParam": {
+      "type": "object",
+      "properties": {
+        "view": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dirtyRows/properties/view",
+          "type": "string",
+          "title": "The view Schema"
+        },
+        "condition": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dirtyRows/properties/condition",
+          "type": "string",
+          "title": "The condition Schema"
+        }
+      }
+    },
+    "erpDataViewRequestParamArg": {
+      "type": "object",
+      "properties": {
+        "paramName": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/requestParamArgs/paramName",
+          "type": "string",
+          "title": "The paramName Schema"
+        },
+        "viewName": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/requestParamArgs/viewName",
+          "type": "string",
+          "title": "The viewName Schema"
+        },
+        "dataset": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/requestParamArgs/dataset",
+          "$ref": "#/definitions/erpDataset",
+          "title": "The dataset Schema"
+        },
+        "methodParamModifier": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/requestParamArgs/methodParamModifier",
+          "type": "string",
+          "title": "The methodParamModifier Schema"
+        }
+      }
+    },
+    "erpDataViewResponseParamArg": {
+      "type": "object",
+      "properties": {
+        "paramName": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/paramName",
+          "type": "string",
+          "title": "The paramName Schema"
+        },
+        "viewName": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/viewName",
+          "type": "string",
+          "title": "The viewName Schema"
+        },
+        "dataset": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/dataset",
+          "$ref": "#/definitions/erpDataset",
+          "title": "The dataset Schema"
+        },
+        "responsePath": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/responsePath",
+          "type": "string",
+          "title": "The responsePath Schema"
+        },
+        "mergeBehavior": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/mergeBehavior",
+          "type": "string",
+          "title": "The mergeBehavior Schema"
+        }
+      }
+    },
+    "erpDataset": {
+      "type": "object",
+      "properties": {
+        "systemCode": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/dataset/systemCode",
+          "type": "string",
+          "title": "The systemCode Schema"
+        },
+        "datasetId": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/dataset/datasetId",
+          "type": "string",
+          "title": "The datasetId Schema"
+        },
+        "serverDataset": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/dataset/serverDataset",
+          "type": "string",
+          "title": "The serverDataset Schema"
+        },
+        "tables": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/dataset/tables",
+          "type": "array",
+          "title": "The tables Schema",
+          "items": {
+            "$ref": "#/definitions/erpDatasetTable"
+          }
+        }
+      },
+      "required": ["datasetId"]
+    },
+    "erpDatasetTable": {
+      "type": "object",
+      "properties": {
+        "systemCode": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/dataset/tables/systemCode",
+          "type": "string",
+          "title": "The systemCode Schema"
+        },
+        "tableId": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/dataset/tables/tableId",
+          "type": "string",
+          "title": "The tableId Schema"
+        },
+        "keys": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs/dataset/tables/keys",
+          "type": "array",
+          "title": "The keys Schema",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["systemCode", "tableId", "keys"]
+    },
+    "property-set": {
+      "type": "object",
+      "title": "The property-set Schema",
+      "required": ["component", "props"],
+      "properties": {
+        "component": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/component",
+          "type": "string",
+          "title": "The component Schema"
+        },
+        "guid": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/guid",
+          "type": "string"
+        },
+        "props": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/props",
+          "type": "array",
+          "title": "The props Schema",
+          "items": {
+            "$ref": "#/definitions/props"
+          }
+        }
+      }
+    },
+    "props": {
+      "type": "object",
+      "title": "The props Schema",
+      "required": ["prop", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "prop": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/prop",
+          "type": "string"
+        },
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/value",
+          "anyOf": [{ "type": "boolean" }, { "type": "number" }, { "type": "string" }]
+        }
+      }
+    },
+    "params": {
+      "type": "object",
+      "title": "The params Schema",
+      "required": ["field"],
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/field",
+          "type": "string",
+          "title": "The field Schema"
+        },
+        "operator": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/operator",
+          "type": "string",
+          "title": "The operator Schema"
+        },
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/epBinding",
+          "type": "string",
+          "title": "The epBinding Schema"
+        },
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/value",
+          "type": ["null", "boolean", "object", "array", "number", "string"],
+          "title": "The value Schema"
+        },
+        "model": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/model",
+          "type": "string",
+          "title": "The model Schema"
+        },
+        "interpolation": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/interpolation",
+          "title": "The interpolation Schema",
+          "$ref": "#/definitions/interpolation"
+        },
+        "rowMode": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/rowMode",
+          "type": "string",
+          "title": "The rowMode Schema"
+        },
+        "isArray": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/isArray",
+          "type": "boolean",
+          "title": "The isArray Schema"
+        },
+        "onlyWhenHasChanges": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/onlyWhenHasChanges",
+          "type": "boolean",
+          "title": "The onlyWhenHasChanges Schema"
+        },
+        "session": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/session",
+          "type": "string",
+          "title": "The session Schema"
+        },
+        "params": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/params",
+          "type": "array",
+          "title": "The params Schema",
+          "items": {
+            "$ref": "#/definitions/params"
+          }
+        }
+      }
+    },
+    "interpolation": {
+      "type": "object",
+      "title": "The Interpolation Schema",
+      "required": ["str", "args"],
+      "properties": {
+        "str": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/interpolation/properties/str",
+          "type": "string",
+          "title": "The str Schema"
+        },
+        "args": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/interpolation/properties/args",
+          "type": "array",
+          "title": "The args Schema",
+          "items": {
+            "$ref": "#/definitions/interpolationArgs"
+          }
+        }
+      }
+    },
+    "interpolationArgs": {
+      "type": "object",
+      "title": "The Interpolation Schema",
+      "required": ["epBinding"],
+      "properties": {
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/interpolation/properties/args/properties/epBinding",
+          "type": "string",
+          "title": "The module Schema"
+        },
+        "session": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/interpolation/properties/args/properties/session",
+          "type": "string",
+          "title": "The session Schema"
+        },
+        "script": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/params/properties/interpolation/properties/args/properties/script",
+          "type": "string",
+          "title": "The script Schema"
+        }
+      }
+    },
+    "addRow": {
+      "type": "object",
+      "title": "The addRow Schema",
+      "required": ["columns"],
+      "additionalProperties": false,
+      "properties": {
+        "columns": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/columns",
+          "type": "array",
+          "title": "The columns Schema",
+          "items": {
+            "$ref": "#/definitions/addColumn"
+          }
+        }
+      }
+    },
+    "row-delete": {
+      "type": "object",
+      "title": "The row-delete Schema",
+      "required": ["datatview"],
+      "additionalProperties": false,
+      "properties": {
+        "datatview": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/datatview",
+          "type": "string",
+          "title": "The Dataview Schema"
+        }
+      }
+    },
+    "addColumn": {
+      "type": "object",
+      "title": "The addRow Schema",
+      "required": ["epBinding"],
+      "additionalProperties": false,
+      "properties": {
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/columns/properties/epBinding",
+          "type": "string",
+          "title": "The epBinding Schema"
+        },
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/columns/properties/value",
+          "type": ["object", "array", "boolean", "string", "number", "null"],
+          "title": "The value Schema"
+        },
+        "dataType": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/columns/properties/dataType",
+          "type": "string",
+          "title": "The dataType Schema"
+        },
+        "expression": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/columns/properties/expression",
+          "type": "string",
+          "title": "JavaScript expression"
+        }
+      }
+    },
+    "url-open": {
+      "type": "object",
+      "title": "The launchUrl Schema",
+      "required": ["URL"],
+      "additionalProperties": false,
+      "properties": {
+        "URL": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/URL",
+          "type": "string",
+          "title": "The URL Schema"
+        },
+        "title": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/title",
+          "type": "string"
+        }
+      }
+    },
+    "condition": {
+      "type": "object",
+      "title": "The condition Schema",
+      "required": ["expression"],
+      "additionalProperties": false,
+      "properties": {
+        "expression": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/expression",
+          "type": "string",
+          "title": "The expression Schema"
+        },
+        "onSuccess": {
+          "$ref": "#/definitions/successResult"
+        },
+        "onFailure": {
+          "$ref": "#/definitions/errorResult"
+        }
+      }
+    },
+    "ModelDialog": {
+      "type": "object",
+      "title": "The ModelDialog Schema",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/type",
+          "type": "string",
+          "title": "The expression Schema",
+          "enum": ["yesNo", "yesNoCancel", "okCancel", "alert", "childDialog"]
+        },
+        "message": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/message",
+          "type": "string",
+          "title": "The message Schema"
+        },
+        "onYes": {
+          "$ref": "#/definitions/successResult"
+        },
+        "onNo": {
+          "$ref": "#/definitions/successResult"
+        },
+        "onOk": {
+          "$ref": "#/definitions/successResult"
+        },
+        "onCancel": {
+          "$ref": "#/definitions/successResult"
+        },
+        "view": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/view",
+          "type": "string",
+          "title": "The view Schema"
+        },
+        "childView": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/childView",
+          "type": "string",
+          "title": "The childView Schema"
+        },
+        "placeholderValues": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/placeholderValues",
+          "type": "array",
+          "title": "The placeholderValues Schema",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "overrides": {
+      "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/overrides/properties/overrides",
+      "type": "object",
+      "title": "The overrides Schema",
+      "required": ["type", "name", "value"],
+      "properties": {
+        "type": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/overrides/properties/type",
+          "type": "string",
+          "title": "The field Schema"
+        },
+        "name": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/overrides/properties/name",
+          "type": "string",
+          "title": "The name Schema"
+        },
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/overrides/properties/value",
+          "type": "string",
+          "title": "The value Schema"
+        }
+      }
+    },
+    "CustomArgType": {
+      "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/subPanelResponse/properties/CustomArgType",
+      "type": "object",
+      "title": "The CustomArgType Schema",
+      "required": ["field", "value"],
+      "properties": {
+        "field": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/subPanelResponse/properties/CustomArgType/properties/field",
+          "type": "string",
+          "title": "The field Schema"
+        },
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/subPanelResponse/properties/CustomArgType/properties/value",
+          "type": ["number", "string", "boolean", "null"],
+          "title": "The value Schema"
+        }
+      }
+    },
+    "Operations": {
+      "$id": "#/properties/events/items/properties/action/properties/param/properties/operations/properties/Operations",
+      "type": "object",
+      "title": "The Operations Schema",
+      "required": ["operator", "operand"],
+      "properties": {
+        "operator": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/operations/properties/Operations/properties/operator",
+          "type": "string",
+          "title": "The operator Schema"
+        },
+        "operand": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/operations/properties/Operations/properties/operand",
+          "type": "string",
+          "title": "The operand Schema"
+        }
+      }
+    },
+    "SubPanelResponse": {
+      "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/subPanelResponse/properties/SubPanelResponse",
+      "type": "object",
+      "title": "The SubPanelResponse Schema",
+      "required": ["epBinding", "column"],
+      "properties": {
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/subPanelResponse/properties/field",
+          "type": "string",
+          "title": "The epBinding Schema"
+        },
+        "column": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/subPanelResponse/properties/column",
+          "type": "string",
+          "title": "The column Schema"
+        }
+      }
+    },
+    "rest": {
+      "type": "object",
+      "title": "The rest Schema",
+      "additionalProperties": false,
+      "displayOnlyNestedProperties": true,
+      "properties": {
+        "request": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/request",
+          "title": "The request Schema",
+          "$ref": "#/definitions/request"
+        },
+        "response": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/response",
+          "title": "The response Schema",
+          "$ref": "#/definitions/response"
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "title": "The request Schema",
+      "required": ["svc", "svcPath"],
+      "additionalProperties": false,
+      "properties": {
+        "svc": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/request/properties/svc",
+          "title": "The request Schema",
+          "type": "string"
+        },
+        "svcPath": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/request/properties/svcPath",
+          "title": "The response Schema",
+          "type": "string"
+        },
+        "method": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/request/properties/method",
+          "title": "The response Schema",
+          "type": "string"
+        },
+        "model": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/request/properties/model",
+          "title": "The model Schema",
+          "type": "string"
+        },
+        "successOnlyIfConditionsAreMet": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/request/properties/successOnlyIfConditionsAreMet",
+          "title": "The successOnlyIfConditionsAreMet Schema",
+          "type": "boolean"
+        },
+        "addFullModelToRequest": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/request/properties/addFullModelToRequest",
+          "title": "The addFullModelToRequest Schema",
+          "type": "boolean"
+        },
+        "ignoreIfEmptyDataSet": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/request/properties/ignoreIfEmptyDataSet",
+          "title": "The ignoreIfEmptyDataSet Schema",
+          "type": "boolean"
+        },
+        "params": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/request/properties/params",
+          "title": "The params Schema",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/params"
+          }
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "title": "The response Schema",
+      "properties": {
+        "model": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/response/properties/model",
+          "title": "The model Schema",
+          "type": "string"
+        },
+        "hasMultipleModel": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/response/properties/hasMultipleModel",
+          "title": "The hasMultipleModel Schema",
+          "type": "boolean"
+        },
+        "preserveOldData": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/response/properties/preserveOldData",
+          "title": "The preserveOldData Schema",
+          "type": "boolean"
+        },
+        "returnObject": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/response/properties/returnObject",
+          "title": "The returnObject Schema",
+          "type": "string"
+        },
+        "fileType": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/response/properties/fileType",
+          "title": "The fileType Schema",
+          "type": "string"
+        },
+        "mergeRow": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/response/properties/mergeRow",
+          "title": "The mergeRow Schema",
+          "type": "boolean"
+        },
+        "replace": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/response/properties/replace",
+          "title": "The replace Schema",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SystemDialog": {
+      "type": "object",
+      "properties": {
+        "objectKind": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/objectKind",
+          "type": "number",
+          "enum": [0, 1, 2]
+        },
+        "objectId": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/objectId",
+          "type": "string"
+        },
+        "objectName": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/objectName",
+          "type": "string"
+        },
+        "objectCreationDate": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/objectCreationDate",
+          "type": "object"
+        },
+        "configKey": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/configKey",
+          "type": "string"
+        },
+        "uiFormFullName": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/uiFormFullName",
+          "type": "string"
+        },
+        "uiFormEventType": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/uiFormEventType",
+          "type": "string",
+          "enum": [
+            "UpdateOnRowChange",
+            "UpdateOnSaveButton",
+            "UpdateOnPrimaryKey",
+            "UpdateOnFormClose",
+            "UpdateOnNewButton",
+            "UpdateOnSaveAndNew",
+            "UpdateOnInvokeSearch",
+            "AddNewOnNewButton",
+            "AddNewOnNewFromGrid",
+            "AddNewOnPrimaryKey",
+            "DeleteOnDeleteButton",
+            "DeleteOnDeleteAddNew",
+            "DeleteAttachment",
+            "UndoOnUndoButton",
+            "UndoOnUndoAddNew",
+            "UndoOnClearButton",
+            "UndoOnClearDataChangeButton",
+            "UndoOnRefreshButton",
+            "UndoOnRefreshDataChangeButton",
+            "PrintDialog",
+            "None"
+          ]
+        },
+        "forceConfirm": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/forceConfirm",
+          "type": "boolean"
+        },
+        "dialogTitle": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dialogTitle",
+          "type": "string"
+        },
+        "dialogMessage": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dialogMessage",
+          "type": "string"
+        },
+        "dialogButtons": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dialogButtons",
+          "type": "number",
+          "enum": [0, 1, 2, 3, 4, 5]
+        },
+        "dialogStatus": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dialogStatus",
+          "type": "string",
+          "enum": ["none", "info", "warning", "error"]
+        },
+        "onSuccess": {
+          "$ref": "#/definitions/successResult"
+        },
+        "onFailure": {
+          "$ref": "#/definitions/errorResult"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["uiFormEventType"]
+    },
+    "search-show": {
+      "type": "object",
+      "title": "The search-show Schema",
+      "additionalProperties": false,
+      "properties": {
+        "searchOptions": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions",
+          "$ref": "#/definitions/searchOptions"
+        }
+      }
+    },
+    "data-commit": {
+      "type": "object",
+      "title": "The data-commit Schema",
+      "additionalProperties": false,
+      "properties": {
+        "dataview": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataview",
+          "type": "string"
+        }
+      }
+    },
+    "data-clear": {
+      "type": "object",
+      "title": "The clear-data Schema",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/type",
+          "type": "string",
+          "enum": ["dataview", "table", "dataset"]
+        },
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/value",
+          "type": "string"
+        }
+      }
+    },
+    "console-write": {
+      "type": "object",
+      "title": "The console-write Schema",
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/value",
+          "type": "string"
+        }
+      }
+    },
+    "calculation": {
+      "type": "object",
+      "title": "The Calculation Schema",
+      "additionalProperties": false,
+      "properties": {
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/epBinding",
+          "type": "string"
+        },
+        "initialValue": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/initialValue",
+          "type": "string"
+        },
+        "operations": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/value",
+          "type": "array",
+          "title": "Custom Arguments",
+          "items": {
+            "$ref": "#/definitions/Operations"
+          }
+        }
+      }
+    },
+    "searchOptions": {
+      "type": "object",
+      "title": "The searchOptions Schema",
+      "required": ["like"],
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/owner",
+          "type": "string",
+          "title": "The owner Schema"
+        },
+        "selectMode": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/selectMode",
+          "type": "string",
+          "title": "The selectMode Schema",
+          "enum": ["MultiSelect", "SingleSelect"]
+        },
+        "like": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/like",
+          "type": "string",
+          "title": "The like Schema"
+        },
+        "searchForm": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/searchForm",
+          "type": "string",
+          "title": "The searchForm Schema"
+        },
+        "preLoadSearchFilter": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/preLoadSearchFilter",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "title": "The Events Items Schema",
+                "additionalProperties": false,
+                "properties": {
+                  "whereClauseTable": {
+                    "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/preLoadSearchFilter/properties/whereClauseTable",
+                    "type": "string",
+                    "title": "The whereClauseTable Schema"
+                  },
+                  "whereClause": {
+                    "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/preLoadSearchFilter/properties/whereClause",
+                    "type": "string",
+                    "title": "The whereClause Schema"
+                  }
+                }
+              }
+            }
+          ],
+          "type": ["string", "array"],
+          "title": "The preLoadSearchFilter Schema"
+        },
+        "validation": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/validation",
+          "type": "object",
+          "title": "validation"
+        },
+        "sortByColumn": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/sortByColumn",
+          "type": "string",
+          "title": "The sortByColumn Schema"
+        },
+        "disableColumns": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/disableColumns",
+          "type": "array",
+          "title": "The disableColumns Schema",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pageSize": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/pageSize",
+          "type": "number",
+          "title": "The pageSize Schema"
+        },
+        "CustomArgs": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/CustomArgs",
+          "type": "array",
+          "title": "Custom Arguments",
+          "items": {
+            "$ref": "#/definitions/CustomArgType"
+          }
+        },
+        "AlternateSearchMethod": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/AlternateSearchMethod",
+          "type": "string",
+          "title": "override svcPath property"
+        },
+        "subPanelResponse": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/subPanelResponse",
+          "type": "array",
+          "title": "The subPanelResponse Schema",
+          "items": {
+            "$ref": "#/definitions/SubPanelResponse"
+          }
+        },
+        "valueIn": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/valueIn",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/searchValueIn"
+          }
+        },
+        "useGetRows": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/useGetRows",
+          "type": "boolean",
+          "title": "Invoke getRows instead of GetList"
+        },
+        "overrides": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/overrides",
+          "type": "array",
+          "title": "The getRow params Schema",
+          "items": {
+            "$ref": "#/definitions/overrides"
+          }
+        },
+        "returnMultipleTables": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/returnMultipleTables",
+          "type": "boolean",
+          "title": "Return Multiple Tables"
+        },
+        "launchSearchType": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/launchSearchType",
+          "type": "string",
+          "title": "Default Search Type"
+        },
+        "launchSearchName": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/searchOptions/properties/launchSearchName",
+          "type": "string",
+          "title": "Search Name"
+        }
+      }
+    },
+    "searchValueIn": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "value"]
+    },
+    "dataview-filter-set": {
+      "type": "object",
+      "title": "The dataview-filter-set Schema",
+      "required": ["dataview", "filter"],
+      "additionalProperties": false,
+      "properties": {
+        "dataview": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataview",
+          "type": "string",
+          "title": "The dataview Schema"
+        },
+        "filter": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/filter",
+          "type": "string",
+          "title": "The filter Schema"
+        }
+      }
+    },
+    "image-set": {
+      "type": "object",
+      "title": "The dataview-filter-set Schema",
+      "required": ["imageContent", "width", "height", "epBinding"],
+      "additionalProperties": false,
+      "properties": {
+        "imageContent": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/imageContent",
+          "type": "string",
+          "title": "The imageContent Schema"
+        },
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/epBinding",
+          "type": "string",
+          "title": "The epBinding Schema"
+        },
+        "width": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/width",
+          "type": "integer",
+          "title": "The width "
+        },
+        "height": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/height",
+          "type": "integer",
+          "title": "The height Schema"
+        }
+      }
+    },
+    "row-current-set": {
+      "type": "object",
+      "title": "The row-current-set Schema",
+      "required": ["dataview"],
+      "additionalProperties": false,
+      "properties": {
+        "dataview": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataview",
+          "type": "string",
+          "title": "The dataview name"
+        },
+        "row": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/row",
+          "type": "integer",
+          "title": "row index"
+        },
+        "position": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/position",
+          "type": "string",
+          "enum": ["last", "first"]
+        }
+      }
+    },
+    "dataview-condition": {
+      "type": "object",
+      "title": "The dataview-condition Schema",
+      "required": ["expression", "dataview", "result"],
+      "additionalProperties": false,
+      "properties": {
+        "dataview": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataview",
+          "type": "string",
+          "title": "dataview"
+        },
+        "result": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/result",
+          "type": "string",
+          "title": "dataview to use to store match result"
+        },
+        "expression": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/expression",
+          "type": "string",
+          "title": "condition expression"
+        },
+        "onNoMatch": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onNoMatch",
+          "$ref": "#/definitions/successResult"
+        },
+        "onSingleMatch": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onSingleMatch",
+          "$ref": "#/definitions/successResult"
+        },
+        "onMultipleMatch": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onMultipleMatch",
+          "$ref": "#/definitions/successResult"
+        },
+        "iterativeEvent": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/iterativeEvent",
+          "type": "string",
+          "title": "perform some action for each matching row in the view."
+        }
+      }
+    },
+    "dashboard-timer-set": {
+      "type": "object",
+      "title": "The setTimer Schema",
+      "required": ["interval", "event"],
+      "additionalProperties": false,
+      "properties": {
+        "interval": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/interval",
+          "type": "integer",
+          "title": "interval"
+        },
+        "event": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/event",
+          "type": "string",
+          "title": "event to execute on timer interval"
+        }
+      }
+    },
+    "event-complete": {
+      "type": "object",
+      "title": "The complete event Schema",
+      "required": ["event-next"],
+      "additionalProperties": false,
+      "properties": {
+        "event-next": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/event-next",
+          "type": "string",
+          "title": "next event to trigger"
+        }
+      }
+    },
+    "switch": {
+      "type": "object",
+      "title": "The switch event Schema",
+      "required": ["cases"],
+      "additionalProperties": false,
+      "properties": {
+        "cases": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/cases",
+          "type": "array",
+          "title": "next event to trigger",
+          "items": {
+            "$ref": "#/definitions/cases"
+          }
+        }
+      }
+    },
+    "cases": {
+      "type": "object",
+      "title": "The case Schema",
+      "required": ["actions"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/items/properties/value",
+          "type": ["string", "number"]
+        },
+        "default": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/items/properties/default",
+          "type": "boolean"
+        },
+        "actions": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/items/properties/actions",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/eventAction"
+          }
+        }
+      }
+    },
+    "app-open": {
+      "type": "object",
+      "title": "The app-open event Schema",
+      "properties": {
+        "view": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/view",
+          "type": "string"
+        },
+        "layer": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/layer",
+          "type": "string"
+        },
+        "slideOut": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/slideOut",
+          "type": "boolean"
+        },
+        "page": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/page",
+          "type": "string"
+        },
+        "width": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/width",
+          "type": "string",
+          "enum": ["Tiny", "Small", "Medium", "Large", "Fill", "Custom"]
+        },
+        "customWidth": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/customWidth",
+          "type": "number"
+        },
+        "onOk": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onOk",
+          "$ref": "#/definitions/dailogResultActions"
+        },
+        "onCancel": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onCancel",
+          "$ref": "#/definitions/dailogResultActions"
+        },
+        "onNone": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onNone",
+          "$ref": "#/definitions/dailogResultActions"
+        },
+        "onAbort": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onAbort",
+          "$ref": "#/definitions/dailogResultActions"
+        },
+        "onRetry": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onRetry",
+          "$ref": "#/definitions/dailogResultActions"
+        },
+        "onIgnore": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onIgnore",
+          "$ref": "#/definitions/dailogResultActions"
+        },
+        "onYes": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onYes",
+          "$ref": "#/definitions/dailogResultActions"
+        },
+        "onNo": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/onNo",
+          "$ref": "#/definitions/dailogResultActions"
+        },
+        "whoLaunched": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/whoLaunched",
+          "type": "string"
+        },
+        "valueIn": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/valueIn",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "dataviews": {
+              "$id": "#/properties/events/items/properties/action/properties/param/properties/valueIn/properties/dataviews",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dataviews"
+              }
+            }
+          }
+        },
+        "valueOut": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/valueOut",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "dataviews": {
+              "$id": "#/properties/events/items/properties/action/properties/param/properties/valueOut/properties/dataviews",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dataviews"
+              }
+            }
+          }
+        },
+        "launchOptions": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/launchOptions"
+        }
+      },
+      "required": ["view"],
+      "additionalProperties": false
+    },
+    "dailogResultActions": {
+      "type": "array",
+      "required": ["actions"],
+      "additionalProperties": false,
+      "items": {
+        "$ref": "#/definitions/eventAction"
+      }
+    },
+    "closeView": {
+      "type": "object",
+      "title": "The close-view event Schema",
+      "properties": {
+        "result": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/result",
+          "type": "string",
+          "enum": ["None", "OK", "Cancel", "Abort", "Retry", "Ignore", "Yes", "No"]
+        },
+        "dataviews": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataviews",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dataviews"
+          }
+        },
+        "valueOut": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/valueOut",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["result"]
+    },
+    "dataviews": {
+      "type": "object",
+      "title": "The process-import-service event Schema",
+      "properties": {
+        "source": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/source",
+          "type": "string"
+        },
+        "destination": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/destination",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["source"]
+    },
+    "process-import-service": {
+      "type": "object",
+      "title": "The process-import-service event Schema",
+      "properties": {
+        "activityId": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/activityId",
+          "type": "string"
+        },
+        "bindingCacheKey": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/bindingCacheKey",
+          "type": "string"
+        },
+        "filesCacheKey": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/filesCacheKey",
+          "type": "string"
+        },
+        "bindingServerFile": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/bindingServerFile",
+          "type": "string"
+        },
+        "specialFolder": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/specialFolder",
+          "$ref": "#/definitions/ErpSpecialFolder"
+        },
+        "status": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/status",
+          "$ref": "#/definitions/processImportStatus"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["activityId"]
+    },
+    "processImportStatus": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "fileNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["success", "message", "fileNames"],
+      "additionalProperties": false
+    },
+    "search-value-set": {
+      "type": "object",
+      "title": "The search-value-set event Schema",
+      "properties": {
+        "display": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/display",
+          "type": "string"
+        },
+        "rowDelimiter": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/rowDelimiter",
+          "type": "string"
+        },
+        "fieldDelimiter": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/fieldDelimiter",
+          "type": "string"
+        },
+        "columns": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/columns",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "multiFieldBindings": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/multiFieldBindings",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "page-navigate-to": {
+      "type": "object",
+      "title": "The page-navigate-to event Schema",
+      "properties": {
+        "page": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/page",
+          "type": "string"
+        }
+      },
+      "required": ["page"],
+      "additionalProperties": false
+    },
+    "row-copy": {
+      "type": "object",
+      "title": "The page-navigate-to event Schema",
+      "properties": {
+        "fromDataView": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/fromDataView",
+          "type": "string"
+        },
+        "toDataView": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/toDataView",
+          "type": "string"
+        },
+        "row-current-set": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/row-current-set",
+          "type": "boolean"
+        }
+      },
+      "required": ["fromDataView", "toDataView"],
+      "additionalProperties": false
+    },
+    "slider-open": {
+      "type": "object",
+      "title": "The slider-open event Schema",
+      "required": ["page"],
+      "properties": {
+        "page": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/page",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dataview-copy": {
+      "type": "object",
+      "title": "The dataview-copy event Schema",
+      "properties": {
+        "fromDataView": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/fromDataView",
+          "type": "string"
+        },
+        "toDataView": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/toDataView",
+          "type": "string"
+        },
+        "setCurrentRow": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/setCurrentRow",
+          "type": "boolean"
+        },
+        "mergeBehavior": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/mergeBehavior",
+          "type": "string"
+        }
+      },
+      "required": ["fromDataView", "toDataView"],
+      "additionalProperties": false
+    },
+    "file-transfer-erp": {
+      "type": "object",
+      "properties": {
+        "specialFolder": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/specialFolder",
+          "$ref": "#/definitions/ErpSpecialFolder"
+        },
+        "serverPath": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/serverPath",
+          "type": "string"
+        },
+        "clientPath": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/clientPath",
+          "type": "string"
+        },
+        "company": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/company",
+          "type": "string"
+        },
+        "transferType": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/transferType",
+          "type": "string",
+          "enum": ["download", "upload"]
+        },
+        "erpFileBoxID": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/erpFileBoxID",
+          "type": "string"
+        }
+      },
+      "required": ["specialFolder", "serverPath"],
+      "additionalProperties": false
+    },
+    "ErpSpecialFolder": {
+      "type": "number",
+      "enum": [0, 1, 2, 3, 4, 5, 6, 7]
+    },
+    "columnChangeParam": {
+      "type": "object",
+      "properties": {
+        "columns": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/columns",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["columns"],
+      "additionalProperties": false
+    },
+    "epDataFilterExpression": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/epCriteriaExpression"
+        },
+        {
+          "$ref": "#/definitions/EpCriteriaBuilder"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "epCriteriaExpression": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/epCriteriaElement"
+      }
+    },
+    "epCriteriaElement": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/epCriteriaItem"
+        },
+        {
+          "$ref": "#/definitions/EpCriteriaGroup"
+        }
+      ]
+    },
+    "epCriteriaItem": {
+      "type": "object",
+      "properties": {
+        "sensitiveCompare": {
+          "type": "boolean"
+        },
+        "negate": {
+          "type": "boolean"
+        },
+        "criteria": {
+          "$ref": "#/definitions/epCriteria"
+        },
+        "columnEpBound": {
+          "type": "boolean"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["sensitiveCompare", "negate", "criteria", "columnEpBound", "columns"]
+    },
+    "epCriteria": {
+      "type": "object",
+      "properties": {
+        "operator": {
+          "type": "string"
+        },
+        "column": {
+          "type": "string"
+        },
+        "value": {},
+        "valueType": {
+          "type": "string",
+          "enum": ["string", "number", "boolean", "date"]
+        },
+        "columnEpBound": {
+          "type": "boolean"
+        }
+      },
+      "required": ["operator", "column"]
+    },
+    "EpCriteriaGroup": {
+      "type": "object",
+      "properties": {
+        "negate": {
+          "type": "boolean"
+        },
+        "group": {
+          "$ref": "#/definitions/IEpCriteriaGroup"
+        },
+        "isNegated": {
+          "type": "boolean"
+        }
+      },
+      "required": ["negate", "group", "isNegated"]
+    },
+    "IEpCriteriaGroup": {
+      "type": "object",
+      "properties": {
+        "operator": {
+          "type": "string",
+          "enum": ["and", "or"]
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/epCriteriaElement"
+          }
+        }
+      },
+      "required": ["operator", "criteria"]
+    },
+    "EpCriteriaBuilder": {
+      "type": "object",
+      "properties": {
+        "criteriaColumns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["criteriaColumns"]
+    },
+    "erp-message-handler": {
+      "type": "object",
+      "title": "The erp-message-handler Schema",
+      "required": ["message", "level", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "message": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/message",
+          "type": "string",
+          "title": "message"
+        },
+        "level": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/level",
+          "type": "string",
+          "title": "level"
+        },
+        "type": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/type",
+          "type": "string",
+          "title": "type"
+        },
+        "buttons": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/buttons",
+          "type": "string",
+          "title": "buttons"
+        },
+        "title": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/title",
+          "type": "string",
+          "title": "title"
+        },
+        "placeholderValues": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/placeholderValues",
+          "type": "array",
+          "title": "The placeholderValues Schema",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "apps-communicator-broadcast": {
+      "type": "object",
+      "title": "The apps-communicator-broadcast event Schema",
+      "required": ["action"],
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/action",
+          "type": "string",
+          "title": "app communicator event name"
+        }
+      }
+    },
+    "apps-communicator-publish": {
+      "type": "object",
+      "title": "The apps-communicator-publish event Schema",
+      "required": ["whoPublished"],
+      "additionalProperties": false,
+      "properties": {
+        "whoPublished": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/whoPublished",
+          "type": "string",
+          "title": "Name of the publisher application"
+        },
+        "args": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/args",
+          "type": "array",
+          "title": "The arguments to be published",
+          "control_type": "Editor",
+          "items": {
+            "$ref": "#/definitions/args"
+          }
+        }
+      }
+    },
+    "data-rollback": {
+      "type": "object",
+      "title": "The data-rollback Schema",
+      "additionalProperties": false,
+      "properties": {
+        "dataview": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataview",
+          "type": "string"
+        },
+        "dataset": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataset",
+          "type": "string"
+        }
+      }
+    },
+    "split": {
+      "type": "object",
+      "title": "The split Schema",
+      "required": ["value", "dataView"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/value",
+          "type": "string",
+          "title": "The value Schema"
+        },
+        "rowDelimiter": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/rowDelimiter",
+          "type": "string",
+          "title": "The rowDelimiter Schema"
+        },
+        "columnDelimiter": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/columnDelimiter",
+          "type": "string",
+          "title": "The columnDelimiter Schema"
+        },
+        "dataView": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataView",
+          "type": "string",
+          "title": "The dataView Schema"
+        },
+        "columnPrefix": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/columnPrefix",
+          "type": "string",
+          "title": "The columnPrefix Schema"
+        },
+        "dataTypes": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataTypes",
+          "type": "array",
+          "title": "The dataTypes Schema",
+          "control_type": "Editor",
+          "items": {
+            "$ref": "#/definitions/dataTypes"
+          }
+        }
+      }
+    },
+    "select-tree-node": {
+      "type": "object",
+      "title": "The select-tree-node Schema",
+      "required": ["component", "sysRowID"],
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/component",
+          "type": "string",
+          "title": "The component Schema"
+        },
+        "sysRowID": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/sysRowID",
+          "type": "string",
+          "title": "The sysRowID Schema"
+        }
+      }
+    },
+    "set-tree-node-state": {
+      "type": "object",
+      "title": "The set-tree-node-state Schema",
+      "required": ["component", "sysRowID", "childFolderEntityType"],
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/component",
+          "type": "string",
+          "title": "The component Schema"
+        },
+        "sysRowID": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/sysRowID",
+          "type": "string",
+          "title": "The sysRowID Schema"
+        },
+        "childFolderEntityType": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/childFolderEntityType",
+          "type": "string",
+          "title": "The childFolderEntityType Schema"
+        },
+        "isExpanded": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/isExpanded",
+          "type": "boolean",
+          "title": "The isExpanded Schema"
+        }
+      }
+    },
+    "refresh-tree": {
+      "type": "object",
+      "title": "The refresh-tree Schema",
+      "required": ["component"],
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/component",
+          "type": "string",
+          "title": "The component Schema"
+        },
+        "preserveState": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/preserveState",
+          "type": "boolean",
+          "title": "The preserveState Schema"
+        }
+      }
+    },
+    "credit-card-entry": {
+      "type": "object",
+      "title": "The credit-card-entry Schema",
+      "required": ["hostAddress", "hostNamespace", "publicKey"],
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/hostAddress",
+          "type": "string",
+          "title": "The hostAddress Schema"
+        },
+        "sysRowID": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/hostNamespace",
+          "type": "string",
+          "title": "The hostNamespace Schema"
+        },
+        "childFolderEntityType": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/publicKey",
+          "type": "string",
+          "title": "The publicKey Schema"
+        }
+      }
+    },
+    "dataview-set-current": {
+      "type": "object",
+      "title": "The dataview-set-current Schema",
+      "required": ["value"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/value",
+          "type": "string",
+          "title": "The value Schema"
+        }
+      }
+    },
+    "grid-schema-invalidate": {
+      "type": "object",
+      "title": "The dataview-set-current Schema",
+      "required": ["type, target"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/type",
+          "type": "string",
+          "title": "The type Schema"
+        },
+        "target": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/target",
+          "type": "string",
+          "title": "The target Schema"
+        }
+      }
+    },
+    "grid-sort-get": {
+      "type": "object",
+      "title": "The grid-sort-get Schema",
+      "required": ["epBinding, sortColumnBinding, sortDirectionBinding"],
+      "additionalProperties": false,
+      "properties": {
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/epBinding",
+          "type": "string",
+          "title": "The epBinding Schema"
+        },
+        "sortColumnBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/sortColumnBinding",
+          "type": "string",
+          "title": "The sortColumnBinding Schema"
+        },
+        "sortDirectionBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/sortDirectionBinding",
+          "type": "string",
+          "title": "The sortDirectionBinding Schema"
+        }
+      }
+    },
+    "grid-sort-set": {
+      "type": "object",
+      "title": "The grid-sort-set Schema",
+      "required": ["epBinding, sortColumn, sortDirection"],
+      "additionalProperties": false,
+      "properties": {
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/epBinding",
+          "type": "string",
+          "title": "The epBinding Schema"
+        },
+        "sortColumn": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/sortColumn",
+          "type": "string",
+          "title": "The sortColumnBinding Schema"
+        },
+        "sortDirection": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/sortDirection",
+          "type": "string",
+          "title": "The sortColumnBinding Schema"
+        }
+      }
+    },
+    "row-add": {
+      "type": "object",
+      "title": "The row-add Schema",
+      "required": ["datatview"],
+      "additionalProperties": false,
+      "properties": {
+        "datatview": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/datatview",
+          "type": "string",
+          "title": "The Dataview Schema"
+        },
+        "values": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/values",
+          "type": "object",
+          "title": "The values Schema"
+        }
+      }
+    },
+    "dataTypes": {
+      "type": "object",
+      "title": "The dataTypes Schema",
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/index",
+          "type": "number",
+          "title": "The index Schema"
+        },
+        "column": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/column",
+          "type": "string",
+          "title": "The column Schema"
+        },
+        "type": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/type",
+          "type": "string",
+          "title": "The type Schema"
+        }
+      }
+    },
+    "args": {
+      "type": "object",
+      "title": "The arguments to publish",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/key",
+          "type": "string",
+          "title": "The key for the data item"
+        },
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/value",
+          "type": "string",
+          "title": "The value for the data item"
+        }
+      }
+    },
+    "session-set": {
+      "type": "object",
+      "title": "The session-set Schema",
+      "required": ["variable", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "variable": {
+          "$id": "#/properties/events/items/properties/action/properties/variable",
+          "type": "string",
+          "title": "The variable Schema",
+          "enum": ["employeeID"]
+        },
+        "value": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/value",
+          "type": "string",
+          "title": "The value Schema"
+        }
+      }
+    },
+    "download-attachment-erp": {
+      "type": "object",
+      "title": "The download-attachment-erp Schema",
+      "required": ["docTypeID", "xFileRefNum", "fileName", "relatedToSchemaName", "relatedToFile"],
+      "additionalProperties": false,
+      "properties": {
+        "docTypeID": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/docTypeID",
+          "type": "string",
+          "title": "Document Type ID, blank defaults to file transfer"
+        },
+        "xFileRefNum": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/xFileRefNum",
+          "type": "number",
+          "title": "Attachment reference number to download from ERP"
+        },
+        "fileName": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/fileName",
+          "type": "string",
+          "title": "Client file name to save as"
+        },
+        "relatedToSchemaName": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/relatedToSchemaName",
+          "type": "string",
+          "title": "Schema the attachment relates to"
+        },
+        "relatedToFile": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/relatedToFile",
+          "type": "string",
+          "title": "Table the attachment relates to"
+        }
+      }
+    },
+    "serial-read": {
+      "type": "object",
+      "title": "Read data from a device connected to a serial port",
+      "required": ["subType", "port", "baudRate", "stopBits", "dataBits", "timeOut", "appendCR", "inquireMsg"],
+      "additionalProperties": false,
+      "properties": {
+        "subType": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/subType",
+          "type": "string",
+          "title": "Subtype, what instrument are we reading from for example scale"
+        },
+        "port": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/port",
+          "type": "string",
+          "title": "Device port to read from"
+        },
+        "baudRate": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/baudRate",
+          "type": "number",
+          "title": "Baud rate to read and write at"
+        },
+        "parity": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/parity",
+          "type": "string",
+          "title": "Parity, options are none, odd or even"
+        },
+        "stopBits": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/stopBits",
+          "type": "number",
+          "title": "Number of data bits in each character"
+        },
+        "timeOut": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/timeOut",
+          "type": "number",
+          "title": "Maximum time wait for a read in milliseconds"
+        },
+        "dataBits": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/dataBits",
+          "type": "number",
+          "title": "Number of data bits in each character"
+        },
+        "appendCR": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/appendCR",
+          "type": "boolean",
+          "title": "Append a carriage return on write"
+        },
+        "inquireMsg": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/inquireMsg",
+          "type": "string",
+          "title": "Inquiry message to write to the device"
+        }
+      }
+    },
+    "row-find": {
+      "type": "object",
+      "title": "The row-find Schema",
+      "required": ["dataview", "expression", "epBinding"],
+      "additionalProperties": false,
+      "properties": {
+        "dataview": {
+          "$id": "#/properties/events/items/properties/action/properties/dataview",
+          "type": "string",
+          "title": "Dataview name"
+        },
+        "expression": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/expression",
+          "type": "string",
+          "title": "The expression"
+        },
+        "mode": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/expression",
+          "type": "string",
+          "title": "Mode",
+          "enum": ["RowIndex", "Exists", "Count"]
+        },
+        "epBinding": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/epBinding",
+          "type": "string",
+          "title": "The epBinding"
+        }
+      }
+    },
+    "dynamic-panel-open": {
+      "type": "object",
+      "title": "The dynamic-panel-open Schema",
+      "required": ["components"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "$id": "#/properties/events/items/properties/action/properties/title",
+          "type": "string",
+          "title": "Title"
+        },
+        "width": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/width",
+          "type": "number",
+          "title": "The width"
+        },
+        "components": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/components",
+          "type": "string",
+          "title": "Components"
+        }
+      }
+    },
+    "kbmax-configurator-open": {
+      "type": "object",
+      "title": "Open KBMax Configurator as a slideout panel",
+      "required": ["configuratorId"],
+      "additionalProperties": false,
+      "properties": {
+        "configuratorId": {
+          "$id": "#/properties/events/items/properties/action/properties/configuratorId",
+          "type": "number",
+          "title": "KBMax Configurator ID"
+        },
+        "configuredProduct": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/configuredProduct",
+          "type": "number",
+          "title": "KBMax Quote Product ID"
+        },
+        "custNum": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/custNum",
+          "type": "number",
+          "title": "Customer Number"
+        },
+        "custId": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/custId",
+          "type": "string",
+          "title": "Customer ID"
+        },
+        "quoteNum": {
+          "$id": "#/properties/events/items/properties/action/properties/param/properties/quoteNum",
+          "type": "number",
+          "title": "Quote Number"
+        }
+      }
+    },
+    "execute-csharp":{
+      "type":"object",
+      "title": "The execute-csharp Schema",
+      "required": ["method"],
+      "additionalProperties": false,
+      "properties": {
+       "method": {
+         "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/method",
+         "type":"string",
+         "title": "Method"
+        },
+        "inputs":{
+         "$ref": "#/definitions/executeCsharpInputParam"
+        },
+        "outputs":{
+         "$ref": "#/definitions/executeCsharpOutputParam"
+        },
+        "type": {
+         "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/type",
+         "type":"string",
+         "title": "Type"
+        },
+        "control": {
+         "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/control",
+         "type":"string",
+         "title": "Control"
+        },
+        "returnType": {
+         "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/returnType",
+         "type":"string",
+         "title": "ReturnType"
+        }
+      }
+    },
+    "executeCsharpInputParam":{
+       "type": "array",
+       "title": "The execute-csharp inputs Schema",
+       "items": {
+         "type":"object",
+         "additionalProperties": false,
+         "properties": {
+           "name":{
+             "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/inputs/properties/name",
+             "type":"string",
+             "title": "Name"
+           },
+           "type":{
+            "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/inputs/properties/type",
+             "type":"string",
+             "enum": ["epBinding", "dataview", "number","string","boolean"],
+             "title": "Type"
+           },
+           "value":{
+            "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/inputs/properties/value",
+             "type":["string","number","boolean"],
+             "title": "Value"
+           },
+           "columns":{
+            "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/inputs/properties/columns",
+             "type":"array",
+             "items": {
+              "type": "string"
+            },
+            "title": "Columns"
+           }
+          }
+       }
+    },
+    "executeCsharpOutputParam": {
+      "type": "array",
+      "title": "The execute-csharp outputs Schema",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/outputs/properties/name",
+            "type": "string",
+            "title": "Name"
+          },
+          "value": {
+            "$id": "#/execute-csharp/properties/events/items/properties/action/properties/param/properties/outputs/properties/value",
+            "type": "string",
+            "title": "Value"
+          }
+        }
+      }
+    },
+	  "erp-function": {
+      "type": "object",
+      "title": "The erp-function outputs Schema",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "apiKey": {
+            "$id": "#/properties/events/items/properties/action/properties/param/properties/message",
+            "type": "string",
+            "title": "message"
+		      },
+          "efxLibrary": {
+            "$id": "#/properties/events/items/properties/action/properties/param/properties/level",
+            "type": "array",
+            "title": "The Library Schema",
+            "items": {
+              "type": "string"
+            }
+          },
+          "efxPath": {
+            "$id": "#/properties/events/items/properties/action/properties/param/properties/type",
+            "type": "array",
+            "title": "The Path Schema",
+            "items": {
+              "type": "string"
+            }
+          },
+          "methodParameters": {
+            "$id": "#/properties/events/items/properties/action/properties/param/properties/methodParameters",
+            "type": "array",
+            "title": "The methodParameters Schema",
+            "items": {
+              "$ref": "#/definitions/params"
+            }
+          },
+          "responseParamArgs": {
+            "$id": "#/properties/events/items/properties/action/properties/param/properties/erpRestPostArgs/properties/responseParamArgs",
+            "type": "array",
+            "title": "The responseParamArgs Schema",
+            "items": {
+              "$ref": "#/definitions/erpDataViewResponseParamArg"
+            }
+          }
+        }
+      }
+    },
+    "datatree-bindings-set": {
+      "type":"object",
+      "title": "Dynamically sets erp-data-tree treeBindings",
+      "required": ["epBinding", "modelId"],
+      "additionalProperties": false,
+      "properties": {
+       "epBinding": {
+         "$id": "#/datatree-bindings-set/properties/events/items/properties/action/properties/param/properties/epBinding",
+         "type":"string",
+         "title": "The view.column that contains the JSON for the new treeBindings node"
+        },
+        "modelId": {
+         "$id": "#/datatree-bindings-set/properties/events/items/properties/action/properties/param/properties/modelId",
+         "type":"string",
+         "title": "the Id on the model of the tree on which to replace treeBindings"
+        }
+      }
+    }
+  }
+}

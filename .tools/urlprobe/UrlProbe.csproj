@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <AssemblyName>UrlProbe</AssemblyName>
+    <RootNamespace>UrlProbe</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EpicorRestAPI">
+      <HintPath>D:\MCP\Erp-Mcp-Bridge\bin\Debug\net10.0\EpicorRestAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:\MCP\Erp-Mcp-Bridge\bin\Debug\net10.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>D:\MCP\Erp-Mcp-Bridge\bin\Debug\net10.0\RestSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

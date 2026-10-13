@@ -49,7 +49,10 @@ class Program
             })
             .WithTools<BoMetadataTools>()
             .WithTools<ExecutionTools>()
-            .WithTools<EfxManagementTools>();
+            .WithTools<EfxManagementTools>()
+            .WithTools<LayerManagementTools>()
+            .WithTools<MetaFxSchemaTools>()
+            .WithTools<GpeShellSyncTools>();
 
         var app = builder.Build();
         app.MapMcp();
@@ -64,7 +67,10 @@ class Program
             .WithStdioServerTransport()
             .WithTools<BoMetadataTools>()
             .WithTools<ExecutionTools>()
-            .WithTools<EfxManagementTools>();
+            .WithTools<EfxManagementTools>()
+            .WithTools<LayerManagementTools>()
+            .WithTools<MetaFxSchemaTools>()
+            .WithTools<GpeShellSyncTools>();
 
         var app = builder.Build();
         await app.RunAsync();
@@ -127,11 +133,26 @@ class Program
         });
         services.AddSingleton<EpicorExecutionService>();
         services.AddSingleton<EfxManagementService>();
+        services.AddSingleton<MetaFxSchemaService>();
+        services.AddSingleton<LayerManagementService>();
+
+        // gpeshell 本地同步（GPEpicorShell）
+        services.AddSingleton(sp =>
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            return builder.Build().GetSection("GPEpicorShell").Get<GPEpicorShellConfig>() ?? new GPEpicorShellConfig();
+        });
+        services.AddSingleton<GpeShellSyncService>();
 
         // Tool 类
         services.AddSingleton<BoMetadataTools>();
         services.AddSingleton<ExecutionTools>();
         services.AddSingleton<EfxManagementTools>();
+        services.AddSingleton<LayerManagementTools>();
+        services.AddSingleton<MetaFxSchemaTools>();
+        services.AddSingleton<GpeShellSyncTools>();
     }
 
     private static EpicorConfig LoadConfiguration()

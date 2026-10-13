@@ -31,3 +31,16 @@ public class MCPServerConfig
     public string Transport { get; set; } = "stdio";
     public int HttpPort { get; set; } = 5000;
 }
+
+/// <summary>
+/// gpeshell（GPEpicorShell）本地同步配置（从 appsettings.json 的 GPEpicorShell 节读取）
+/// </summary>
+public class GPEpicorShellConfig
+{
+    /// <summary>GPEpicorShell.exe 完整路径。留空则自动发现：环境变量 GPEPICSHELL_EXE → PATH → 常见目录探测</summary>
+    public string ExePath { get; set; } = "";
+    /// <summary>本地 EFX 项目根目录（存放 efx.XXX 项目文件夹）。留空则必须由调用方通过 localPath 参数指定项目目录</summary>
+    public string LocalProjectsRoot { get; set; } = "";
+    /// <summary>download 命令超时（秒）</summary>
+    public int TimeoutSeconds { get; set; } = 300;
+}

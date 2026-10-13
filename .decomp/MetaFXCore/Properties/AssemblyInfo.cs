@@ -1,0 +1,17 @@
+using System.Diagnostics;
+using System.Reflection;
+using System.Resources;
+using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
+
+[assembly: InternalsVisibleTo("Test.Epicor.MetaFX.Core,PublicKey=0024000004800000940000000602000000240000525341310004000001000100c31ca98bb530b3f5c59ac4e5d467b12109fb5dc2a98eb7b5e71c6e3c7c28cf1560f7628235d88e71cb0d1cd733c1458e68a73440bbd944b54feff686b149aa6a61b70f2649c35605a72802e22b94c921a001aa73e5dca9c67384aaa0f68c701dede837165bdeb2455ddac626ecadfa03382079393506880d81c8efa781841fcb")]
+[assembly: InternalsVisibleTo("Test.Epicor.MetaFX.Core, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c31ca98bb530b3f5c59ac4e5d467b12109fb5dc2a98eb7b5e71c6e3c7c28cf1560f7628235d88e71cb0d1cd733c1458e68a73440bbd944b54feff686b149aa6a61b70f2649c35605a72802e22b94c921a001aa73e5dca9c67384aaa0f68c701dede837165bdeb2455ddac626ecadfa03382079393506880d81c8efa781841fcb")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7")]
+[assembly: AssemblyCompany("Epicor")]
+[assembly: AssemblyProduct("Kinetic")]
+[assembly: AssemblyCopyright("(c) 2003-2025 Epicor Software Corporation: All Rights Reserved")]
+[assembly: AssemblyDelaySign(false)]
+[assembly: AssemblyFileVersion("5.1.100.7")]
+[assembly: SatelliteContractVersion("5.1.100.0")]
+[assembly: AssemblyInformationalVersion("2025.2.7")]
+[assembly: AssemblyVersion("5.1.100.0")]
